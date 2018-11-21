@@ -3,6 +3,8 @@ package com.vdishub.kotlinproject.customer.ui.main
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +36,10 @@ class CustomerFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CustomerViewModel::class.java)
         // TODO: Use the ViewModelUserActivity
+        recyclerView.layoutManager= LinearLayoutManager(activity)
+        recyclerView.addItemDecoration(DividerItemDecoration(activity,LinearLayoutManager.VERTICAL))
+        Log.e("viewModel@@"    ,""+viewModel.getCustomerAdpater())
+        recyclerView.adapter=viewModel.getCustomerAdpater()
     }
 
     override fun onStart() {
@@ -43,6 +49,7 @@ class CustomerFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ if (it!=null){
                 progressBar.visibility=View.GONE
+                viewModel.getCustomerAdpater().updateCustomerList(it)
             }
             },
                 { error -> Log.e(CustomerFragment.TAG, "Unable to get customer list", error) }))

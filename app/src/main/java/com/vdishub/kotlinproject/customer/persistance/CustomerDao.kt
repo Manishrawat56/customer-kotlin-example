@@ -16,7 +16,7 @@ import io.reactivex.Flowable
 @Dao
 interface CustomerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upInsrt(customer: Customer)
+    fun insert(customer: Customer)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(customerList: List<Customer>)
@@ -34,4 +34,7 @@ interface CustomerDao {
      */
     @Query("SELECT * from Customer ORDER BY name ASC")
     fun getAllCustomers(): Flowable<List<Customer>>
+
+    @Query("SELECT * from Customer WHERE id = :id")
+    fun getCustomer(id: Int): Flowable<Customer>
 }

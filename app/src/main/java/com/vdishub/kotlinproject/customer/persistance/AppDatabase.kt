@@ -1,11 +1,12 @@
 package com.vdishub.kotlinproject.customer.persistance
 
-import android.os.AsyncTask
 import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.Room
 import android.arch.persistence.room.Database
+import android.arch.persistence.room.Room
+import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import android.os.AsyncTask
+import android.util.Log
 
 
 /**
@@ -21,7 +22,7 @@ public abstract class AppDatabase : RoomDatabase() {
 
     private class PopulateDbAsync
 
-    internal constructor(db: AppDatabase) : AsyncTask<Void, Void, Void>() {
+    internal constructor(val db: AppDatabase) : AsyncTask<Void, Void, Void>() {
 
         private val mDao: CustomerDao
 
@@ -30,45 +31,70 @@ public abstract class AppDatabase : RoomDatabase() {
         }
 
         override fun doInBackground(vararg params: Void): Void? {
-            /*mDao.deleteAll()
-            var emp = Employee(1, "Prashant", 29)
-            mDao.insert(emp)
-            emp = Employee(2, "Manish rawat", 26)
-            mDao.insert(emp)*/
+            mDao.deleteAll()
+            Log.e("doInBackground"    ,"doInBackground")
+            mDao.insert(Customer(1, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(2, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(3, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(4, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(5, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(6, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(7, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(8, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(9, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(10, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(11, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(12, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(13, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(14, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(15, "Prashant", "1234567890","abx@gmail.com","narela","delhi",110090,"new delhi","India"))
+            mDao.insert(Customer(16, "Manish", "9874561230","xyz@gmail.com","sonia vihar","delhi",110090,"new delhi","India"))
             return null
         }
     }
 
     companion object {
-        private lateinit var INSTANCE: AppDatabase
+            private lateinit var INSTANCE: AppDatabase
+      /*  @Volatile private var INSTANCE: AppDatabase? = null
 
-        /**
-         * Gets database.
-         *
-         * @param context the context
-         * @return the database
-         */
-        fun getDatabase(context: Context): AppDatabase {
-            if (INSTANCE == null) {
-                synchronized(AppDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        // Create database here
-                        INSTANCE = Room.databaseBuilder(
-                            context.getApplicationContext(),
-                            AppDatabase::class.java, "emp_database"
-                        )
-                            .addCallback(sRoomDatabaseCallback).build()
-                    }
-                }
+        fun getInstance(context: Context): AppDatabase =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
-            return INSTANCE
-        }
+
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(context.applicationContext,
+                AppDatabase::class.java, DATABASE_NAME
+            ).build()*/
+
+            /**
+             * Gets database.
+             *
+             * @param context the context
+             * @return the database
+             */
+            fun getInstance(context: Context): AppDatabase {
+
+                    synchronized(AppDatabase::class.java) {
+
+                            // Create database here
+                            INSTANCE = Room.databaseBuilder(
+                                context.getApplicationContext(),
+                                AppDatabase::class.java, "emp_database.db"
+                            )
+                                .addCallback(sRoomDatabaseCallback).build()
+
+                    }
+
+                return INSTANCE
+            }
+
 
         private val sRoomDatabaseCallback = object : RoomDatabase.Callback() {
 
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
-                PopulateDbAsync(INSTANCE).execute()
+                    PopulateDbAsync(INSTANCE).execute()
             }
         }
     }

@@ -5,10 +5,12 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.vdishub.kotlinproject.constants.DATABASE_NAME
+import javax.inject.Singleton
 
 /**
  * The Room database that contains the Users table
  */
+@Singleton
 @Database(entities = arrayOf(User::class), version = 1)
 abstract class UsersDatabase : RoomDatabase() {
 

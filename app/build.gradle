@@ -18,6 +18,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
+        }
+        debug {
+            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
         }
     }
 }
@@ -44,10 +48,30 @@ dependencies {
     implementation deps.rx_android
     implementation deps.rxjava2
 
+    //recyclerView
+    implementation deps.support.recyclerview
+
+    //dagger
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_support_compiler
+
+    api deps.google.gson
+    api deps.square.picasso
+    api deps.square.okhttpDownloader
+
+    api deps.square.retrofit
+    api deps.square.okhttp
+    api deps.square.gsonConverter
+    api deps.square.retrofitRxAdapter
+
+
     implementation deps.arch_core.testing
 
     testImplementation deps.hamcrest
-    implementation deps.support.recyclerview
+
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
